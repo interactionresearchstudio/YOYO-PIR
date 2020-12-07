@@ -111,16 +111,16 @@ String generateID() {
 
 long checkSensLength() {
   if (digitalRead(SENS_3) == 0 && digitalRead(SENS_1) == 1) {
-    Serial.println("Your fade time is 3 hours");
-    return 180;
+    Serial.println("On time is 3 seconds");
+    return 3000;
   } else if (digitalRead(SENS_1) == 0 && digitalRead(SENS_3) == 1) {
-    Serial.println("Your fade time is 1 hour");
-    return 60;
+    Serial.println("On time is 30 seconds");
+    return 30000;
   } else if (digitalRead(SENS_3) == 0 && digitalRead(SENS_1) == 0) {
-    Serial.println("Your fade time is 9 hours");
-    return 540;
+    Serial.println("On time is 1 seconds");
+    return 1000;
   } else {
-    Serial.println("Your fade time is 6 hours");
-    return 360;
+    Serial.println("On time is 10 seconds");
+    return 10000;
   }
 }

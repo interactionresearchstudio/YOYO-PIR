@@ -1,8 +1,8 @@
 //#define DEV
 //#define STAGING
 
-#define SENS_3 22
-#define SENS_1 21
+#define SENS_3 26
+#define SENS_1 25
 
 
 #define LED_BUILTIN 2
@@ -65,11 +65,14 @@ int PIR_sensitivity;
 #define PIR_PIN 14
 #define FAN_PIN 13
 #define FANRUNTIME 10000
+int fan_on_time = 10;
 long currFanRunTime;
 bool isFanRunning = false;
 long prevPirCheckMillis;
 #define PIRCHECKINTERVAL 50
 bool hasSentPIR = false;
+#define PIRSENDINTERVAL 1000
+long prevPirOnMillis = 0;
 
 #include "SPIFFS.h"
 
@@ -129,7 +132,7 @@ char path[] = "/socket.io/?transport=websocket"; // Socket.IO Base Path
 void setup() {
   Serial.begin(115200);
   setupPins();
-  PIR_sensitivity = checkSensLength();
+  fan_on_time = checkSensLength();
 
   //create 10 digit ID
   myID = generateID();
