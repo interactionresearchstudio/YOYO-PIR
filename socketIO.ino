@@ -33,17 +33,12 @@ void socketIO_msg(const char * payload, size_t length) {
   Serial.print("Which is of type ");
   Serial.println(data_project);
 
-  if (String(data_project) == "lighttouch") {
-    long data_hue = incomingDoc["data"]["hue"];
-    Serial.print("Light touch! Hue: ");
-    Serial.println(data_hue);
+  if (String(data_project) == "pirFan") {
+    long data_pir = incomingDoc["data"]["pir"];
+    Serial.print("PIR triggered");
+    Serial.println(data_pir);
     // TODO - Run light touch
-    hue[REMOTELED] = (uint8_t)data_hue;
-    ledChanged[REMOTELED] = true;
-   //added to enable reset of fading mid fade
-    isFadingRGB[REMOTELED] = false;
-    fadeRGB(REMOTELED);
-    startLongFade(REMOTELED);
+    startFan();
   }
   else if (String(data_project) == "test") {
     blinkDevice();
@@ -62,14 +57,14 @@ void socketIO_sendButtonPress() {
   socketIO.emit("msg", sender.c_str());
 }
 
-void socketIO_sendColour() {
-  Serial.println("colour send");
+void socketIO_sendPir() {
+  Serial.println("PIR trigger");
   const size_t capacity = 3 * JSON_OBJECT_SIZE(2);
   DynamicJsonDocument doc(capacity);
   doc["macAddress"] = getRemoteMacAddress(1);
   JsonObject data = doc.createNestedObject("data");
-  data["project"] = "lighttouch";
-  data["hue"] = String((int)getUserHue());
+  data["project"] = "pirFan";
+  data["pir"] = String(true);
   String sender;
   serializeJson(doc, sender);
   socketIO.emit("msg", sender.c_str());
