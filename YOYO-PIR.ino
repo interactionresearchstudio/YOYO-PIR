@@ -71,7 +71,7 @@ bool isFanRunning = false;
 long prevPirCheckMillis;
 #define PIRCHECKINTERVAL 50
 bool hasSentPIR = false;
-#define PIRSENDINTERVAL 1000
+#define PIRSENDINTERVAL 3000
 long prevPirOnMillis = 0;
 
 #include "SPIFFS.h"
