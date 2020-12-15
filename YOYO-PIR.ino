@@ -34,7 +34,7 @@ int currentSetupStatus = setup_pending;
 #define PROJECT_SLUG "YoYo-PIR"
 #define VERSION "v0.2"
 #define ESP32set
-#define WIFICONNECTTIMEOUT 60000
+#define WIFICONNECTTIMEOUT 120000
 #define SSID_MAX_LENGTH 31
 
 #include <AsyncTCP.h>
