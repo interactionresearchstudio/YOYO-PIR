@@ -13,7 +13,7 @@ void setupPins() {
   buttonConfigBuiltIn->setEventHandler(handleButtonEvent);
   buttonConfigBuiltIn->setFeature(ButtonConfig::kFeatureClick);
   buttonConfigBuiltIn->setFeature(ButtonConfig::kFeatureLongPress);
-  buttonConfigBuiltIn->setLongPressDelay(LONG_TOUCH);
+  buttonConfigBuiltIn->setLongPressDelay(LONG_PRESS);
 }
 
 //internal led functions
@@ -61,9 +61,9 @@ void handleButtonEvent(AceButton* button, uint8_t eventType, uint8_t buttonState
           if (currentSetupStatus == setup_finished) socketIO_sendButtonPress();
           break;
         case AceButton::kEventLongPressed:
-#ifdef DEV
+//#ifdef DEV
           factoryReset();
-#endif
+//#endif
           break;
         case AceButton::kEventRepeatPressed:
           break;
@@ -78,10 +78,8 @@ void factoryReset() {
   Serial.println("factoryReset");
 
   preferences.begin("scads", false);
-  preferences.clear();
   preferences.end();
   currentSetupStatus = setup_pending;
-
   ESP.restart();
 }
 
@@ -123,4 +121,19 @@ long checkSensLength() {
     Serial.println("On time is 10 seconds");
     return 10000;
   }
+}
+
+void setLastConnected(String ssid) {
+  preferences.begin("scads", false);
+  preferences.putString("lastConnected",ssid);
+  preferences.end();
+
+}
+
+String getLastConnected() {
+  String lastConnected;
+  preferences.begin("scads", false);
+  lastConnected = preferences.getString("lastConnected", "");
+  preferences.end();
+  return lastConnected;
 }

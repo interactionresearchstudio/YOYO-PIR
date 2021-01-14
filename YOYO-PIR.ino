@@ -34,7 +34,7 @@ int currentSetupStatus = setup_pending;
 #define PROJECT_SLUG "YoYo-PIR"
 #define VERSION "v0.2"
 #define ESP32set
-#define WIFICONNECTTIMEOUT 120000
+#define WIFICONNECTTIMEOUT 240000
 #define SSID_MAX_LENGTH 31
 
 #include <AsyncTCP.h>
@@ -109,6 +109,7 @@ int blinkDuration = 200;
 //Button Settings
 AceButton buttonBuiltIn(BUTTON_BUILTIN);
 #define LONG_TOUCH 1500
+#define LONG_PRESS 10000
 
 void handleButtonEvent(AceButton*, uint8_t, uint8_t);
 int longButtonPressDelay = 5000;
@@ -167,6 +168,8 @@ void setup() {
     Serial.println(macCredentials);
     //connect to router to talk to server
     digitalWrite(LED_BUILTIN, 0);
+    Serial.print("Last connected Wifi SSID: ");
+    Serial.println(getLastConnected());
     connectToWifi(wifiCredentials);
     //checkForUpdate();
     setupSocketIOEvents();
@@ -216,10 +219,12 @@ void loop() {
       dnsServer.processNextRequest();
       break;
     case setup_finished:
-      socketIO.loop();
+      if (!disconnected) {
+        socketIO.loop();
+        pirHandler();
+        fanHandler();
+      }
       ledHandler();
-      pirHandler();
-      fanHandler();
       wifiCheck();
       break;
   }
