@@ -78,6 +78,7 @@ void factoryReset() {
   Serial.println("factoryReset");
 
   preferences.begin("scads", false);
+  preferences.clear();
   preferences.end();
   currentSetupStatus = setup_pending;
   ESP.restart();
