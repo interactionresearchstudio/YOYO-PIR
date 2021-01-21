@@ -14,6 +14,7 @@ void setupPins() {
   buttonConfigBuiltIn->setFeature(ButtonConfig::kFeatureClick);
   buttonConfigBuiltIn->setFeature(ButtonConfig::kFeatureLongPress);
   buttonConfigBuiltIn->setLongPressDelay(LONG_PRESS);
+
 }
 
 //internal led functions
@@ -61,9 +62,7 @@ void handleButtonEvent(AceButton* button, uint8_t eventType, uint8_t buttonState
           if (currentSetupStatus == setup_finished) socketIO_sendButtonPress();
           break;
         case AceButton::kEventLongPressed:
-//#ifdef DEV
           factoryReset();
-//#endif
           break;
         case AceButton::kEventRepeatPressed:
           break;
@@ -71,7 +70,6 @@ void handleButtonEvent(AceButton* button, uint8_t eventType, uint8_t buttonState
       break;
   }
 }
-
 
 //reset functions
 void factoryReset() {
@@ -126,7 +124,7 @@ long checkSensLength() {
 
 void setLastConnected(String ssid) {
   preferences.begin("scads", false);
-  preferences.putString("lastConnected",ssid);
+  preferences.putString("lastConnected", ssid);
   preferences.end();
 
 }
